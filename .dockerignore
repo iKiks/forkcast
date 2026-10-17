@@ -1,0 +1,12 @@
+.venv/
+venv/
+.git/
+.cache/
+.pytest_cache/
+__pycache__/
+*.pyc
+.azure/
+.vscode/
+.github/
+setup/
+*.cmd
