@@ -1,0 +1,107 @@
+{
+  "n_matches": 500,
+  "seconds": 20.69,
+  "ms_per_match": 41.4,
+  "all_pass": true,
+  "metrics": [
+    {
+      "metric": "goals_per_match",
+      "value": 2.9,
+      "band": [
+        2.4,
+        3.1
+      ],
+      "pass": true
+    },
+    {
+      "metric": "shots_per_team",
+      "value": 14.408,
+      "band": [
+        10.0,
+        16.0
+      ],
+      "pass": true
+    },
+    {
+      "metric": "on_target_share",
+      "value": 0.337,
+      "band": [
+        0.3,
+        0.4
+      ],
+      "pass": true
+    },
+    {
+      "metric": "pass_completion",
+      "value": 0.87,
+      "band": [
+        0.76,
+        0.88
+      ],
+      "pass": true
+    },
+    {
+      "metric": "passes_per_team",
+      "value": 472.374,
+      "band": [
+        300,
+        520
+      ],
+      "pass": true
+    },
+    {
+      "metric": "fouls_per_match",
+      "value": 22.342,
+      "band": [
+        18.0,
+        27.0
+      ],
+      "pass": true
+    },
+    {
+      "metric": "yellow_per_match",
+      "value": 3.82,
+      "band": [
+        2.5,
+        5.0
+      ],
+      "pass": true
+    },
+    {
+      "metric": "home_win_share",
+      "value": 0.374,
+      "band": [
+        0.36,
+        0.52
+      ],
+      "pass": true
+    },
+    {
+      "metric": "draw_share",
+      "value": 0.242,
+      "band": [
+        0.18,
+        0.32
+      ],
+      "pass": true
+    },
+    {
+      "metric": "km_per_outfield_player",
+      "value": 9.709,
+      "band": [
+        9.0,
+        12.0
+      ],
+      "pass": true
+    },
+    {
+      "metric": "top_speed_kmh",
+      "value": 35.767,
+      "band": [
+        30.0,
+        37.0
+      ],
+      "pass": true
+    }
+  ]
+}

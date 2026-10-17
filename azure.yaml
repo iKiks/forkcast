@@ -1,0 +1,11 @@
+# Azure Developer CLI: `azd up` provisions infra/main.bicep and deploys the container.
+name: forkcast
+metadata:
+  template: forkcast@0.1.0
+services:
+  web:
+    project: .
+    language: python
+    host: containerapp
+    docker:
+      path: ./Dockerfile

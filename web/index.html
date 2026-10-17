@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Forkcast · Match intelligence, proven</title>
+  <meta name="description" content="Every moment, replayed a thousand ways. Synthetic football match intelligence with explainable, simulation-backed overlays.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div>
+        <div class="wordmark">FORK<b>CAST</b></div>
+        <div class="sub" id="league">Synthetic match intelligence</div>
+      </div>
+    </div>
+    <div class="fixture">
+      <select id="home" aria-label="Home club"></select>
+      <span class="vs">vs</span>
+      <select id="away" aria-label="Away club"></select>
+      <label class="seed">seed <input id="seed" type="number" value="42" min="0" max="999999"></label>
+      <label class="seed">from <input id="skip" type="number" value="0" min="0" max="90" step="0.5" title="Start at minute"></label>
+      <button id="kick" class="primary">Kick off</button>
+    </div>
+    <div class="controls">
+      <label>Lens <select id="lens"></select></label>
+      <label>Language <select id="lang"></select></label>
+      <label>Speed <select id="speed">
+        <option value="4">4×</option><option value="8">8×</option><option value="15" selected>15×</option><option value="30">30×</option><option value="60">60×</option><option value="150">150×</option>
+      </select></label>
+      <button id="pause" title="Space">Pause</button>
+      <button id="voice" aria-pressed="false" title="Read cues aloud in the chosen language">Voice off</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="stage">
+      <div class="broadcast" id="broadcast">
+        <canvas id="pitch" aria-label="Match view"></canvas>
+        <div class="bug" id="bug">
+          <span class="club" id="bugHome">HOM</span>
+          <span class="score" id="bugScore">0–0</span>
+          <span class="club" id="bugAway">AWY</span>
+          <span class="clock" id="bugClock">00:00</span>
+        </div>
+        <div class="outlook-chip" id="outlookChip" title="Exact outlook from the fork engine">
+          <div class="ol-bar"><i id="olH"></i><i id="olD"></i><i id="olA"></i></div>
+          <div class="ol-txt" id="olTxt">Outlook</div>
+        </div>
+        <div class="meter" id="meter" hidden></div>
+        <div class="overlays" id="overlays"></div>
+        <div class="lab-hint" id="labHint" hidden></div>
+        <div class="buffer" id="buffer" hidden>Buffering…</div>
+      </div>
+      <div class="river-wrap">
+        <div class="river-head">
+          <div><b>Futures River</b> <span class="muted">win · draw · loss, solved exactly from every state</span></div>
+          <div class="river-legend" id="riverLegend"></div>
+        </div>
+        <div class="river-box"><canvas id="river"></canvas><div class="tip" id="riverTip" hidden></div></div>
+        <div class="story" id="storyLine" aria-live="polite"></div>
+      </div>
+      <div class="tape" id="tape"></div>
+    </section>
+
+    <aside class="side">
+      <nav class="tabs" role="tablist">
+        <button role="tab" data-tab="forecast" class="active">Forecast</button>
+        <button role="tab" data-tab="news">Newsroom</button>
+        <button role="tab" data-tab="lab">Moment Lab</button>
+        <button role="tab" data-tab="stats">Stats</button>
+      </nav>
+
+      <div class="panel" id="tab-forecast">
+        <div class="fc-head"><span id="fcClock">Pre-match</span><span class="muted" id="fcLeft"></span></div>
+        <div class="fc-bar"><i id="fcH"></i><i id="fcD"></i><i id="fcA"></i></div>
+        <div class="fc-labels" id="fcLabels"></div>
+        <p class="fc-story" id="fcStory"></p>
+        <h4>Most likely final scores</h4>
+        <div class="fc-scores" id="fcScores"></div>
+        <h4>Who scores next?</h4>
+        <div id="fcNext"></div>
+        <h4>Goals still to come <span class="muted">(expected)</span></h4>
+        <div id="fcXg"></div>
+        <p class="fc-note">Solved exactly over every possible rest-of-match from the current possession and pitch zone, using the same world model that generates the match.</p>
+      </div>
+
+      <div class="panel" id="tab-news" hidden>
+        <div class="agents-key" id="agentsKey"></div>
+        <ol class="trace" id="trace"></ol>
+      </div>
+
+      <div class="panel" id="tab-lab" hidden>
+        <div class="lab-intro">
+          <h3>Play the Moment</h3>
+          <p>Freeze the match on the latest touch, then click anywhere on the pitch to play your own pass. The fork engine replays your choice through 2,000 futures.</p>
+          <div class="btn-row">
+            <button class="primary" id="labPlay">Freeze &amp; play</button>
+            <button id="labDuel">Pundit Duel</button>
+            <button id="labResume">Resume</button>
+          </div>
+        </div>
+        <div id="labOut" class="lab-out"></div>
+        <div class="lab-intro">
+          <h3>Fork Inspector</h3>
+          <p>Click any card in the Newsroom to see the 1,000 futures behind it.</p>
+        </div>
+        <div id="forkOut" class="lab-out"></div>
+      </div>
+
+      <div class="panel" id="tab-stats" hidden>
+        <div id="statsTeams"></div>
+        <h4>Control vs chaos <span class="muted">last 5 minutes</span></h4>
+        <div class="gauge"><div class="gauge-fill" id="gaugeFill"></div><div class="gauge-labels"><span>Chaos</span><span id="gaugeVal">50</span><span>Control</span></div></div>
+        <h4>Physical <span class="muted">from 5 Hz tracking</span></h4>
+        <div id="physical" class="records"></div>
+        <h4>Match records</h4>
+        <div id="records" class="records"></div>
+        <div id="playerCard"></div>
+      </div>
+    </aside>
+  </main>
+
+  <div class="modal" id="recap" hidden role="dialog" aria-modal="true" aria-labelledby="recapTitle">
+    <div class="modal-card">
+      <div class="modal-head"><h2 id="recapTitle">Full-time recap</h2><button id="recapClose" aria-label="Close">Close</button></div>
+      <div id="recapBody"></div>
+      <div class="btn-row">
+        <button id="dlCues">Download overlay cues (JSON)</button>
+        <button id="dlRecap">Download recap</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot">All clubs, players and matches are fictional and synthetic. No real match data, names or marks.</footer>
+  <script src="/static/app.js"></script>
+</body>
+</html>

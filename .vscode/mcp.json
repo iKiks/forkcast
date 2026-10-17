@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "forkcast": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["-m", "forkcast.mcp_server"]
+    }
+  }
+}

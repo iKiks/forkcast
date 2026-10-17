@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.cache/
+.pytest_cache/
+.env
+.azure/
+*.log
+publish.cmd
