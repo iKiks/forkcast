@@ -9,3 +9,4 @@ services:
     host: containerapp
     docker:
       path: ./Dockerfile
+      remoteBuild: true  # build in Azure Container Registry: no Docker needed on your machine
